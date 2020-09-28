@@ -1,17 +1,15 @@
 const express = require('express');
 const app = express();
-const port  = 8080;
+const port = 8080;
 // const login = require('login');
-function generateRandomString() {
-  return Math.random().toString(36).substring(2,8);
-}
+const generateRandomString = () => Math.random().toString(36).substring(2, 8);
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
 
@@ -27,7 +25,7 @@ app.get('/', (req, res) => {
   // })
 });
 
-app.get('/urls', (req,res) => {
+app.get('/urls', (req, res) => {
   const templateVars = {
     urls: urlDatabase
   }
@@ -38,19 +36,39 @@ app.get('/urls/new', (req, res) => {
   res.render('urls_new');
 })
 app.post('/urls', (req, res) => {
-  console.log(req.body);
-  res.send('Ok');
+  // console.log(req.body);
+  let newStr = generateRandomString();
+  urlDatabase[newStr] = req.body.longURL;
+  // console.log(urlDatabase);
+  res.redirect(300, `/urls/${newStr}`);
+  // res.end();
+})
+app.get('/u/:shortURL', (req, res) => {
+  // console.log(req.params);
+  console.log(req.params);
+  if (req.params.shortURL === 'undefined') {
+    res.send('404 Page Not Found');
+    res.statusCode = 404;
+    return;
+  }
+  else {
+    const longURL = urlDatabase[req.params.shortURL];
+    // console.log(longURL);
+    res.redirect(300, `${longURL}`);
+  }
 })
 
-app.get('/urls.json', (req,res) => {
+app.get('/urls.json', (req, res) => {
   res.json(urlDatabase);
 })
+
 app.get('/urls/:shortURL', (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL]
   }
   res.render('urls_show', templateVars)
+
 })
 
 
