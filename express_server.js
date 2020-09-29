@@ -11,12 +11,12 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+app.set("view engine", "ejs");
 app.post('/login', (req, res) => {
   res.cookie('username', req.body.username);
   res.redirect('/urls/');
 });
-
-app.set("view engine", "ejs");
 
 app.get('/', (req, res) => {
   res.send('Hello!');
@@ -47,6 +47,13 @@ app.post('/urls/:shortURL/delete', (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect(200, `/urls/`);
 });
+app.get('/register', (req, res) => {
+  let username = req.cookies.username || '';
+  const templateVars = {
+    username: username
+  }
+  res.render('user_registration', templateVars);
+})
 app.post('/urls/:shortURL', (req, res) => {
   urlDatabase[req.params.shortURL] = req.body.longURL;
   res.redirect(300, `/urls/`);
