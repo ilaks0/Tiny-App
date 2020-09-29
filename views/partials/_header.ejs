@@ -11,9 +11,10 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
-    <% if(username) {%>
+    <% for(let user in users)
+    <% if(user.id === ) {%>
     Logged in as:
-    <%=username%>
+    <%=user.email%>
     <form method='POST' action="/logout"><button class='btn btn-secondary'>Logout</button></form>
     <%} else{ %>
 
