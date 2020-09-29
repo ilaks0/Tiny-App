@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 8080;
+const cookieParser = require('cookie-parser');
 // const login = require('login');
 const generateRandomString = () => Math.random().toString(36).substring(2, 8);
 
@@ -15,14 +16,6 @@ app.set("view engine", "ejs");
 
 app.get('/', (req, res) => {
   res.send('Hello!');
-  // if (login) {
-  //   app.route('/urls', (req, res) => {
-  //     res.send('');
-  //   })
-  // } else
-  // app.route('/urls', (req, res) => {
-  //   res.send('');
-  // })
 });
 
 app.get('/urls', (req, res) => {
@@ -36,12 +29,9 @@ app.get('/urls/new', (req, res) => {
   res.render('urls_new');
 })
 app.post('/urls', (req, res) => {
-  // console.log(req.body);
   let newStr = generateRandomString();
   urlDatabase[newStr] = req.body.longURL;
-  // console.log(urlDatabase);
   res.redirect(300, `/urls/${newStr}`);
-  // res.end();
 })
 
 app.post('/urls/:shortURL/delete', (req, res) => {
@@ -49,14 +39,14 @@ app.post('/urls/:shortURL/delete', (req, res) => {
   res.redirect(200, `/urls/`);
 });
 app.post('/urls/:shortURL', (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
   urlDatabase[req.params.shortURL] = req.body.longURL;
   res.redirect(300, `/urls/`);
 })
-
+app.post('/login', (req, res) => {
+  res.cookie('username', req.body.username); 
+  res.redirect('/urls/');
+});
 app.get('/u/:shortURL', (req, res) => {
-  // console.log(req.params);
   console.log(req.params);
   if (req.params.shortURL === 'undefined') {
     res.send('404 Page Not Found');
@@ -65,7 +55,6 @@ app.get('/u/:shortURL', (req, res) => {
   }
   else {
     const longURL = urlDatabase[req.params.shortURL];
-    // console.log(longURL);
     res.redirect(300, `${longURL}`);
   }
 })
