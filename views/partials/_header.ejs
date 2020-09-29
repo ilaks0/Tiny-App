@@ -11,16 +11,16 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
-    <% for(let user in users)
-    <% if(user.id === ) {%>
+    <% if(user) {%>
     Logged in as:
-    <%=user.email%>
+    <%=user%>
     <form method='POST' action="/logout"><button class='btn btn-secondary'>Logout</button></form>
     <%} else{ %>
 
-    <form class="form-inline" action="/login" method="POST">
-      <input type='text' name='username' placeholder='Username'>&nbsp;<button type='submit'
-        class='btn btn-secondary'>Login</form>
+    <form class="form-inline" action="/register" method="GET">
+      <button type='submit' style='font-weight: bold; color: rgb(36, 99, 110)' class='btn'>Register</button></form>
+    <form class="form-inline" action="/login" method="GET">
+      <button type='submit' style='font-weight: bold; color: rgb(36, 99, 110)' class='btn'>Login</button></form>
     <% } %>
   </nav>
 </header>
