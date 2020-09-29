@@ -4,7 +4,6 @@ const port = 8080;
 const cookieParser = require('cookie-parser');
 
 const bodyParser = require("body-parser");
-// const login = require('login');
 const generateRandomString = () => Math.random().toString(36).substring(2, 8);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -22,20 +21,14 @@ app.set("view engine", "ejs");
 app.get('/', (req, res) => {
   res.send('Hello!');
 });
-// app.use(cookieParser());
 app.get('/urls', (req, res) => {
-  
-  // if (req.cookies)
-  // console.log(req.cookies);
   let username = req.cookies.username || '';
   const templateVars = {
     urls: urlDatabase,
     username: username
   }
-  // res.render('/partials/_header', templateVars);
   res.render('urls_index', templateVars);
 })
-// app.use(cookieParser());
 app.get('/urls/new', (req, res) => {
   let username = req.cookies.username || '';
   const templateVars = {
@@ -59,7 +52,6 @@ app.post('/urls/:shortURL', (req, res) => {
   res.redirect(300, `/urls/`);
 })
 app.get('/u/:shortURL', (req, res) => {
-  // console.log(req.params);
   if (req.params.shortURL === 'undefined') {
     res.send('404 Page Not Found');
     res.statusCode = 404;
@@ -72,10 +64,6 @@ app.get('/u/:shortURL', (req, res) => {
 })
 
 app.get('/urls.json', (req, res) => {
-  // const templateVars = {
-  //   urls: urlDatabase,
-  //   username: req.cookies['username']
-  // }
   res.json(urlDatabase);
 })
 app.post('/logout', (req, res) => {
