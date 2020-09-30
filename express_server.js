@@ -58,7 +58,7 @@ const users = {
 app.set("view engine", "ejs");
 app.get('/login', (req, res) => {
   if (idHelper(req.session['user_id'], users, users))
-    return res.redirect('/urls');
+    return res.redirect(401, '/urls');
   let userId;
   idHelper(req.session['user_id'], users, users) ? userId = users[req.session['user_id']].email : userId = '';
   const templateVars = {
@@ -112,15 +112,19 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.post('/urls', (req, res) => {
-  let newStr = generateRandomString();
-  let newDate = new Date();
-  urlDatabase[newStr] = {};
-  urlDatabase[newStr].longURL = req.body.longURL;
-  urlDatabase[newStr].userID = req.session['user_id'];
-  urlDatabase[newStr].date = newDate;
-  urlDatabase[newStr].visits = {};
-  urlDatabase[newStr].totalVisits = 0;
-  res.redirect(302, `/urls/${newStr}`);
+  if (idHelper(req.session['user_id'], users)) {
+    let newStr = generateRandomString();
+    let newDate = new Date();
+    urlDatabase[newStr] = {};
+    urlDatabase[newStr].longURL = req.body.longURL;
+    urlDatabase[newStr].userID = req.session['user_id'];
+    urlDatabase[newStr].date = newDate;
+    urlDatabase[newStr].visits = {};
+    urlDatabase[newStr].totalVisits = 0;
+    return res.redirect(302, `/urls/${newStr}`);
+  }
+  else
+    res.redirect(401, '/urls');
 });
 
 app.post('/urls/:shortURL/delete', (req, res) => {
@@ -130,9 +134,11 @@ app.post('/urls/:shortURL/delete', (req, res) => {
       return res.redirect(`/urls/`);
     }
   } else
-    res.redirect(404, '/urls');
+    res.redirect(401, '/urls');
 });
 app.get('/register', (req, res) => {
+  if (idHelper(req.session['user_id'], users, users))
+    return res.redirect(401, '/urls');
   let userId;
   idHelper(req.session['user_id'], users) ? userId = users[req.session['user_id']].email : userId = '';
   const templateVars = {
@@ -146,8 +152,7 @@ app.post('/register', (req, res) => {
     return res.redirect(400, '/register');
   for (let user in users) {
     if (req.body.email === users[user].email) {
-      res.redirect(400, '/register');
-      return;
+      return res.redirect(400, '/register');      
     }
   }
   let randId = generateRandomString();
@@ -163,9 +168,8 @@ app.post('/urls/:shortURL', (req, res) => {
       return res.redirect(`/urls/`);
     }
   } else
-    res.redirect(404, '/urls');
+    res.redirect(401, '/urls');
 });
-
 
 app.get('/urls.json', (req, res) => { res.json(urlDatabase) });
 app.post('/logout', (req, res) => {
@@ -178,7 +182,7 @@ app.get('/u/:shortURL', (req, res) => {
     return res.statusCode = 404;
   }
   else if (!urlInDB(req.params.shortURL, urlDatabase))
-    return res.redirect(400, '/urls');
+    return res.redirect(404, '/urls');
   else {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     urlDatabase[req.params.shortURL].visits[ip] ? urlDatabase[req.params.shortURL].visits.ip++
@@ -203,7 +207,10 @@ app.get('/urls/:shortURL', (req, res) => {
     longURL: urlDatabase[req.params.shortURL].longURL,
     user: userEmail,
     id: userId,
-    list: urlDatabase
+    list: urlDatabase,
+    date: urlDatabase[req.params.shortURL].date,
+    totalVisits: urlDatabase[req.params.shortURL].totalVisits,
+    uniqueVisits: Object.keys(urlDatabase[req.params.shortURL].visits).length
   }
   res.render('urls_show', templateVars)
 });

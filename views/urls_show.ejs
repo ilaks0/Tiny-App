@@ -9,11 +9,11 @@
 </head>
 
 <body>
+  <header>
+    <%- include('./partials/_header'); %>
+  </header>
   <div class="card text-center">
     <div class="card-header">
-      <header>
-        <%- include('./partials/_header'); %>
-      </header>
     </div>
 
     <div class="card-body">
@@ -31,6 +31,17 @@
       <p>You do not own this URL.</p>
     </div>
     <% } %>
+    <p>
+      Date created: 
+      <%= date %>
+    </p>
+    <p>Total visits: 
+      <%= totalVisits %>
+    </p>
+    <p>
+      Unique Visits:
+      <%= uniqueVisits %>
+    </p>
   </div>
 
   <!-- Bootstrap JS -->

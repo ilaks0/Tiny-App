@@ -1,7 +1,7 @@
 const getUserByEmail = (email, db) => {
   for (const user in db) {
     if (db[user].email === email)
-      return user;
+      return db[user];
   }
   return null;
 };
@@ -13,6 +13,7 @@ const idHelper = (idCan, users) => {
   }
   return false;
 };
+
 const urlsForUser = (id, urlDatabase) => {
   let cpy = {};
   for (let short in urlDatabase) {
@@ -20,7 +21,7 @@ const urlsForUser = (id, urlDatabase) => {
       cpy[short] = urlDatabase[short];
   }
   return cpy;
-}
+};
 
 const urlInDB = (url, db) => {
   for (const short in db) {
@@ -28,11 +29,11 @@ const urlInDB = (url, db) => {
       return true
   }
   return false;
-}
+};
 
 module.exports = {
   getUserByEmail,
   idHelper,
   urlsForUser,
   urlInDB
-}
+};
