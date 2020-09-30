@@ -1,4 +1,5 @@
 const express = require('express');
+const {} = require('./helper');
 const app = express();
 const port = 8080;
 const cookieParser = require('cookie-parser');
@@ -17,17 +18,21 @@ app.use(cookieSession({
 let todaysDate = new Date();
 const hashed = password => bcrypt.hashSync(password, 10);
 const urlDatabase = {
-  b6UTxQ: { 
-    longURL: "https://www.tsn.ca", 
-    userID: "aJ48lW", 
-    date: todaysDate, 
+  b6UTxQ: {
+    longURL: "https://www.tsn.ca",
+    userID: "aJ48lW",
+    date: todaysDate,
     visits: {},
-  uniqueVisits: function() {
-    return Object.keys(this.visis).reduce((a, val) => a + val, 0);
+    totalVisits: 0
+  },
+  i3BoGr: {
+    longURL: "https://www.google.ca", userID: "aJ48lW", date: todaysDate, visits: {},
+    totalVisits: 0
+  },
+  sgq3y6: {
+    longURL: 'http://www.youtube.com', userID: 'abcdef', date: todaysDate, visits: {},
+    totalVisits: 0
   }
- },
-  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW", date: todaysDate, visits: {} },
-  sgq3y6: { longURL: 'http://www.youtube.com', userID: 'abcdef', date: todaysDate, visits: {} }
 };
 const users = {
   "userRandomID": {
@@ -63,12 +68,10 @@ const urlsForUser = id => {
   return cpy;
 }
 
-
 app.set("view engine", "ejs");
 
 app.get('/login', (req, res) => {
-  // console.log(req.session);
-  if(idHelper(req.session['user_id']))
+  if (idHelper(req.session['user_id']))
     return res.redirect('/urls');
   let userId;
   idHelper(req.session['user_id']) ? userId = users[req.session['user_id']].email : userId = '';
@@ -131,6 +134,8 @@ app.post('/urls', (req, res) => {
   urlDatabase[newStr].longURL = req.body.longURL;
   urlDatabase[newStr].userID = req.session['user_id'];
   urlDatabase[newStr].date = newDate;
+  urlDatabase[newStr].visits = {};
+  urlDatabase[newStr].totalVisits = 0;
   res.redirect(302, `/urls/${newStr}`);
 });
 
@@ -189,6 +194,7 @@ app.get('/u/:shortURL', (req, res) => {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     urlDatabase[req.params.shortURL].visits.ip ? urlDatabase[req.params.shortURL].visits.ip++
       : urlDatabase[req.params.shortURL].visits.ip = 1;
+    urlDatabase[req.params.shortURL].totalVisits++;
     const longURL = urlDatabase[req.params.shortURL].longURL;
     res.redirect(302, `${longURL}`);
   }
@@ -199,7 +205,7 @@ app.get('/urls.json', (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('user_id');
+  req.session.user_id = null;
   res.redirect('/urls');
 });
 
