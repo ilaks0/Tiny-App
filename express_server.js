@@ -2,11 +2,17 @@ const express = require('express');
 const app = express();
 const port = 8080;
 const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session')
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 const generateRandomString = () => Math.random().toString(36).substring(2, 8);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['Secretkey', 'Supersecret'],
+  // maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 
 let todaysDate = new Date();
 const hashed = password => bcrypt.hashSync(password, 10);
@@ -61,10 +67,11 @@ const urlsForUser = id => {
 app.set("view engine", "ejs");
 
 app.get('/login', (req, res) => {
-  if(idHelper(req.cookies['user_id']))
+  // console.log(req.session);
+  if(idHelper(req.session['user_id']))
     return res.redirect('/urls');
   let userId;
-  idHelper(req.cookies['user_id']) ? userId = users[req.cookies['user_id']].email : userId = '';
+  idHelper(req.session['user_id']) ? userId = users[req.session['user_id']].email : userId = '';
   const templateVars = {
     user: userId
   }
@@ -74,7 +81,8 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
   for (let user in users) {
     if (req.body.email === users[user].email && bcrypt.compareSync(req.body.password, users[user].password)) {
-      res.cookie('user_id', user);
+      // res.cookie('user_id', user);
+      req.session['user_id'] = user;
       return res.redirect('/urls');
     }
   }
@@ -82,7 +90,7 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  if (idHelper(req.cookies['user_id']))
+  if (idHelper(req.session['user_id']))
     return res.redirect('/urls')
   else
     return res.redirect('/login');
@@ -90,10 +98,10 @@ app.get('/', (req, res) => {
 
 app.get('/urls', (req, res) => {
   let userId;
-  idHelper(req.cookies['user_id']) ? userId = users[req.cookies['user_id']].email : userId = '';
+  idHelper(req.session['user_id']) ? userId = users[req.session['user_id']].email : userId = '';
   let newDB = {};
-  if (idHelper(req.cookies['user_id']))
-    newDB = urlsForUser(req.cookies['user_id']);
+  if (idHelper(req.session['user_id']))
+    newDB = urlsForUser(req.session['user_id']);
   const templateVars = {
     urls: newDB,
     user: userId
@@ -103,8 +111,8 @@ app.get('/urls', (req, res) => {
 
 app.get('/urls/new', (req, res) => {
   let userId;
-  if (idHelper(req.cookies['user_id'])) {
-    userId = users[req.cookies['user_id']].email
+  if (idHelper(req.session['user_id'])) {
+    userId = users[req.session['user_id']].email
   }
   else {
     return res.redirect('/login');
@@ -121,14 +129,14 @@ app.post('/urls', (req, res) => {
   let newDate = new Date();
   urlDatabase[newStr] = {};
   urlDatabase[newStr].longURL = req.body.longURL;
-  urlDatabase[newStr].userID = req.cookies['user_id'];
+  urlDatabase[newStr].userID = req.session['user_id'];
   urlDatabase[newStr].date = newDate;
   res.redirect(302, `/urls/${newStr}`);
 });
 
 app.post('/urls/:shortURL/delete', (req, res) => {
-  if (idHelper(req.cookies['user_id'])) {
-    if (urlDatabase[req.params.shortURL].userID === req.cookies['user_id']) {
+  if (idHelper(req.session['user_id'])) {
+    if (urlDatabase[req.params.shortURL].userID === req.session['user_id']) {
       delete urlDatabase[req.params.shortURL];
       return res.redirect(`/urls/`);
     }
@@ -137,7 +145,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 });
 app.get('/register', (req, res) => {
   let userId;
-  idHelper(req.cookies['user_id']) ? userId = users[req.cookies['user_id']].email : userId = '';
+  idHelper(req.session['user_id']) ? userId = users[req.session['user_id']].email : userId = '';
   const templateVars = {
     user: userId
   }
@@ -162,8 +170,8 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/urls/:shortURL', (req, res) => {
-  if (idHelper(req.cookies['user_id'])) {
-    if (urlDatabase[req.params.shortURL].userID === req.cookies['user_id']) {
+  if (idHelper(req.session['user_id'])) {
+    if (urlDatabase[req.params.shortURL].userID === req.session['user_id']) {
       urlDatabase[req.params.shortURL].longURL = req.body.longURL;
       return res.redirect(`/urls/`);
     }
@@ -198,9 +206,9 @@ app.post('/logout', (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   let userEmail = '';
   let userId = '';
-  if (idHelper(req.cookies['user_id'])) {
-    userEmail = users[req.cookies['user_id']].email;
-    userId = req.cookies['user_id'];
+  if (idHelper(req.session['user_id'])) {
+    userEmail = users[req.session['user_id']].email;
+    userId = req.session['user_id'];
   }
 
   const templateVars = {
