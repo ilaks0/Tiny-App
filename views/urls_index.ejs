@@ -53,7 +53,7 @@
         <% for(let url in urls) { %>
         <tr>
           <td><a href='/urls/<%=url%>'><%= url %></a></td>
-          <td><a href='/u/<%=url%>'><%= urls[url].longURL %></a></td>
+          <td><a href='/u/<%=url%>' target='_blank'><%= urls[url].longURL %></a></td>
           <td>
             <%= urls[url].date %>
           </td>
