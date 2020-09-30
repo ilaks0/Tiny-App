@@ -22,6 +22,9 @@
         <tr>
           <th scope="col">Short URL</th>
           <th scope="col">Long URL</th>
+          <th scope="col">Date</th>
+          <th scope="col">Visits</th>
+          <th scope="col">Unique Visits</th>
           <th scope="col">Edit</th>
           <th scope="col">Delete</th>
         </tr>
@@ -35,7 +38,12 @@
         </tr>
         <tr>
           <td>
-            These are not the URLs you are looking for.
+            Cannot create URLs
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Do you wish to <a href='/login'>Login</a>?
           </td>
         </tr>
         <% } %>
@@ -44,6 +52,12 @@
         <tr>
           <td><%= url %></td>
           <td><%= urls[url].longURL %></td>
+          <td>
+            <%= urls[url].date %>
+          </td>
+          <td>
+            <%= Object.keys(urls[url].visits).length %>
+          </td>
           <td>
             <form method="GET" action="/urls/<%= url %>"><button class="btn btn-primary" type='submit'>Edit</button>
             </form>
