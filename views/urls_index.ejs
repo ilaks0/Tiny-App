@@ -27,6 +27,19 @@
         </tr>
       </thead>
       <tbody>
+        <% if (!user) {%>
+        <tr>
+          <td>
+            You are not logged in
+          </td>
+        </tr>
+        <tr>
+          <td>
+            These are not the URLs you are looking for.
+          </td>
+        </tr>
+        <% } %>
+
         <% for(let url in urls) { %>
         <tr>
           <td><%= url %></td>

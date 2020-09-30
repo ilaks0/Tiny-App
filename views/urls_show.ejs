@@ -26,7 +26,13 @@
     <form method="POST" for='longURL' action="/urls/<%= shortURL %>">New URL: <input type='text' name='longURL'
         value='<%= longURL %>''> <button type=' submit'>Submit</button></form>
     </p>
+    <% if(!user || id !== list[shortURL].userID) { %>
+    <div class="card-footer text-muted">
+      <p>You do not own this URL.</p>
+    </div>
+    <% } %>
   </div>
+
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
