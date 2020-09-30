@@ -16,7 +16,6 @@ app.use(cookieParser());
 app.use(cookieSession({
   name: 'session',
   keys: ['Secretkey', 'Supersecret'],
-  // maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
 let todaysDate = new Date();
 
@@ -103,10 +102,8 @@ app.get('/urls/new', (req, res) => {
   let userId;
   if (idHelper(req.session['user_id'], users)) {
     userId = users[req.session['user_id']].email
-  }
-  else {
+  } else
     return res.redirect('/login');
-  }
   const templateVars = {
     urls: urlDatabase,
     user: userId
@@ -145,10 +142,8 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  if (!(req.body.email) || !(req.body.password)) {
-    res.redirect(400, '/register');
-    return;
-  }
+  if (!(req.body.email) || !(req.body.password))
+    return res.redirect(400, '/register');
   for (let user in users) {
     if (req.body.email === users[user].email) {
       res.redirect(400, '/register');
@@ -171,6 +166,12 @@ app.post('/urls/:shortURL', (req, res) => {
     res.redirect(404, '/urls');
 });
 
+
+app.get('/urls.json', (req, res) => { res.json(urlDatabase) });
+app.post('/logout', (req, res) => {
+  req.session.user_id = null;
+  res.redirect('/urls');
+});
 app.get('/u/:shortURL', (req, res) => {
   if (req.params.shortURL === 'undefined') {
     res.send('404 Page Not Found');
@@ -186,15 +187,6 @@ app.get('/u/:shortURL', (req, res) => {
     const longURL = urlDatabase[req.params.shortURL].longURL;
     res.redirect(302, `${longURL}`);
   }
-});
-
-app.get('/urls.json', (req, res) => {
-  res.json(urlDatabase);
-});
-
-app.post('/logout', (req, res) => {
-  req.session.user_id = null;
-  res.redirect('/urls');
 });
 
 app.get('/urls/:shortURL', (req, res) => {
@@ -216,4 +208,4 @@ app.get('/urls/:shortURL', (req, res) => {
   res.render('urls_show', templateVars)
 });
 
-const server = app.listen(port, () => console.log('listening ', port));
+app.listen(port, () => console.log('listening ', port));
