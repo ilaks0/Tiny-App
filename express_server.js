@@ -3,7 +3,8 @@ const {
   getUserByEmail,
   idHelper,
   urlsForUser,
-  urlInDB
+  urlInDB,
+  urlPrefix
 } = require('./helper');
 const app = express();
 const port = 8080;
@@ -189,7 +190,7 @@ app.get('/u/:shortURL', (req, res) => {
       : urlDatabase[req.params.shortURL].visits.ip = 1;
     urlDatabase[req.params.shortURL].totalVisits++;
     const longURL = urlDatabase[req.params.shortURL].longURL;
-    res.redirect(302, `${longURL}`);
+    res.redirect(302, `${urlPrefix(longURL)}${longURL}`);
   }
 });
 

@@ -31,9 +31,20 @@ const urlInDB = (url, db) => {
   return false;
 };
 
+const urlPrefix = url => {
+  let regexW = /^www/;
+  let regexH = /^http/;
+  if (regexH.test(url))
+    return '';
+  if (regexW.test(url))
+    return 'http://';
+  return 'http://www.';
+}
+
 module.exports = {
   getUserByEmail,
   idHelper,
   urlsForUser,
-  urlInDB
+  urlInDB,
+  urlPrefix
 };
