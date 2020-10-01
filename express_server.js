@@ -11,7 +11,6 @@ const port = 8080;
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(cookieSession({
   name: 'session',
   keys: ['Secretkey', 'Supersecret'],

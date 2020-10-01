@@ -23,7 +23,7 @@
     <div class="card-footer text-muted"></div>
     <h2>Edit</h2>
     <p>
-    <form method="POST" for='longURL' action="/urls/<%= shortURL %>">New URL: <input type='text' name='longURL'
+    <form method="POST" for='longURL' action="/urls/<%= shortURL %>?_method=PUT">New URL: <input type='text' name='longURL'
         value='<%= longURL %>''> <button class='btn-success' type='submit'>Submit</button></form>
     </p>
     <% if(!user || id !== list[shortURL].userID) { %>

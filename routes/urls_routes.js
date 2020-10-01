@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { urlDatabase, users } = require('../db');
+const methodOverride = require('method-override');
+
 
 module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString }) => {
 
+  router.use(methodOverride('_method'));
   router.get('/', (req, res) => {
     let user = getEmailById(req.session['user_id'], users);
     let urls = {};
@@ -43,18 +46,18 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
     else
       res.redirect(401, '/urls');
   });
-
-  router.post('/:id/delete', (req, res) => {
+// Cannot DELETE /urls/sgq3y6
+  router.delete('/:id', (req, res) => {
     if (idHelper(req.session['user_id'], users)) {
-      if (urlDatabase[req.params.id].userID === req.session['user_id']) { // if the url's creator is the current user 
+      if (urlDatabase[req.params.id].userID === req.session['user_id']) { // verify url's creator is the current user 
         delete urlDatabase[req.params.id]; // then delete the url
         return res.redirect(`/urls/`);
       }
     } else
       res.redirect(401, '/urls');
   });
-
-  router.post('/:id', (req, res) => {
+//Cannot PUT /urls/sgq3y6
+  router.put('/:id', (req, res) => {
     if (idHelper(req.session['user_id'], users)) {
       if (urlDatabase[req.params.id].userID === req.session['user_id']) {
         urlDatabase[req.params.id].longURL = req.body.longURL;
