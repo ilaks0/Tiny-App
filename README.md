@@ -1,10 +1,10 @@
 # Tiny-App by IL
 
-An express web app where users can create shortened URLs with a random 6 character string, corresponding to a user's URL destination.
+A node app with express where users can create shortened URLs with a random 6 character string, corresponding to a user's URL destination. Similar to TinyURL.com and bit.ly.
 
 ## Purpose
 
-**_BEWARE:_ This library was published for learning purposes. It is _not_ intended for use in production-grade software.**
+**_BEWARE:_ This application was published for learning purposes. It is _not_ intended for use in production-grade software.**
 
 This project was created and published by me as part of my learnings at Lighthouse Labs. 
 
@@ -12,7 +12,7 @@ This project was created and published by me as part of my learnings at Lighthou
 
 **Deployed on GCP**
 **Accessible by internet network at:**
-[ian.laksono.net](ian.laksono.net) 
+[ian.laksono.net](ian.laksono.net) OR 
 [tiny-app-291120.uk.r.appspot.com](tiny-app-291120.uk.r.appspot.com)
 
 ## Requires/Imports

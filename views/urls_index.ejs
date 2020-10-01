@@ -35,7 +35,7 @@
         <% if (!user) {%>
         <tr>
           <td>
-            You are not logged in
+            TinyApp shortens long URLs
           </td>
         </tr>
         <tr>
@@ -68,7 +68,7 @@
             </form>
           </td>
           <td>
-            <form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-secondary"
+            <form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-danger"
                 type='delete'>Delete</button></form>
           </td>
         </tr>
