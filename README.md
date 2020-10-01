@@ -43,6 +43,12 @@ Interpret keys and values in request data sent from client into object format
 - body-parser
 - cookie-session
 
+## Final Product
+
+!["URLs Page"](https://github.com/ilaksono/Tiny-App/blob/master/docs/urls-page.png)
+!["Specific URL Edit Page"](https://github.com/ilaksono/Tiny-App/blob/master/docs/urls-show-page.png)
+
+
 ## Documentation
 
 The following helper functions can be found in /helpers/dbHelpers.js:
