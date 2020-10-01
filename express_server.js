@@ -25,7 +25,7 @@ const generateRandomString = () => Math.random().toString(36).substring(2, 8);
 
 app.set("view engine", "ejs");
 app.get('/login', (req, res) => {
-  if (idHelper(req.session['user_id'], users, users))
+  if (idHelper(req.session['user_id'], users))
     return res.redirect(401, '/urls');
   let user = getEmailById(req.session['user_id'], users);
   const templateVars = { user };
@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
 app.get('/urls', (req, res) => {
   let user = getEmailById(req.session['user_id'], users);
   let urls = {};
-  if (idHelper(req.session['user_id'], users, users))
+  if (idHelper(req.session['user_id'], users))
     urls = urlsForUser(req.session['user_id'], urlDatabase);
   const templateVars = { urls, user };
   res.render('urls_index', templateVars);
@@ -100,7 +100,7 @@ app.post('/urls/:id/delete', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  if (idHelper(req.session['user_id'], users, users))
+  if (idHelper(req.session['user_id'], users))
     return res.redirect(401, '/urls');
   let user = getEmailById(req.session['user_id'], users);
   const templateVars = { user };
