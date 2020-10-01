@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const { urlDatabase, users } = require('../db');
+const { users } = require('../db');
 
 module.exports = ({ idHelper, getEmailById, hashed, generateRandomString }) => {
   router.get('/login', (req, res) => {
@@ -55,4 +55,4 @@ module.exports = ({ idHelper, getEmailById, hashed, generateRandomString }) => {
   });
 
   return router;
-}
+};

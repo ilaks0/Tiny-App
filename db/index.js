@@ -47,4 +47,4 @@ const users = { // Sample User Database
 module.exports = {
   urlDatabase,
   users
-}
+};

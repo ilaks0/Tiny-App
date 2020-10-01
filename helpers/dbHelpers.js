@@ -42,7 +42,7 @@ module.exports = () => {
     return '';
   };
 
-  const hashed = password => bcrypt.hashSync(password, saltRounds); // takes password argument and returns hashed 
+  const hashed = password => bcrypt.hashSync(password, saltRounds); // takes password argument and returns hashed
   
   const generateRandomString = () => Math.random().toString(36).substring(2, 8);
 
@@ -55,4 +55,4 @@ module.exports = () => {
     hashed,
     generateRandomString,
   };
-}
+};

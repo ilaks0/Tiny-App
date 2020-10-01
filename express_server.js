@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
   name: 'session',
   keys: ['Secretkey', 'Supersecret'],
-}))
+}));
 
 app.set("view engine", "ejs");
 
@@ -27,7 +27,9 @@ app.get('/', (req, res) => {
   res.redirect('/login');
 });
 
-app.get('/urls.json', (req, res) => { res.json(urlDatabase) });
+app.get('/urls.json', (req, res) => {
+  res.json(urlDatabase);
+});
 
 app.get('/u/:id', (req, res) => {
   if (!dbHelpers.idHelper(req.params.id, urlDatabase))

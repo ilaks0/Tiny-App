@@ -19,7 +19,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
   router.get('/new', (req, res) => {
     let user;
     if (idHelper(req.session['user_id'], users)) {
-      user = users[req.session['user_id']].email
+      user = users[req.session['user_id']].email;
     } else
       return res.redirect('/login');
     const templateVars = {
@@ -43,14 +43,13 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
       };
       urlDatabase[uniqueShort] = newURL;
       return res.redirect(302, `/urls/${uniqueShort}`);
-    }
-    else
+    } else
       res.redirect(401, '/urls');
   });
 
   router.delete('/:id', (req, res) => {
     if (idHelper(req.session['user_id'], users)) {
-      if (urlDatabase[req.params.id].userID === req.session['user_id']) { // verify url's creator is the current user 
+      if (urlDatabase[req.params.id].userID === req.session['user_id']) { // verify url's creator is the current user
         delete urlDatabase[req.params.id]; // then delete the url
         return res.redirect(`/urls/`);
       }
@@ -87,9 +86,9 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
       totalVisits: urlDatabase[req.params.id].totalVisits,
       uniqueVisits: Object.keys(urlDatabase[req.params.id].visits).length,
       times: urlDatabase[req.params.id].time
-    }
-    res.render('urls_show', templateVars)
+    };
+    res.render('urls_show', templateVars);
   });
 
   return router;
-}
+};

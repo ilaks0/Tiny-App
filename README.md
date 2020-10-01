@@ -31,11 +31,11 @@ Interpret keys and values in request data sent from client into object format
 
 ## Documentation
 
-The following helper functions can be found in /helper.js:
+The following helper functions can be found in /helpers/dbHelpers.js:
 
-* `idHelper(str, obj)`: returns true when id(6 char string) is found in users db, else false
+* `idHelper(str, obj)`: returns true when id(6 char string) is found in db, else false
 * `urlsForUser(str, obj)`: returns obj of urls created by a user, when given user id and url database
-* `urlInDB(str, obj)`: returns true if a url short id(6 char string) is found in url db
 * `urlPrefix(str)`: returns corresponding prefix string to correct URLs, depending on user's input of URL prefix, starting with `http://`, `wwww.`, or lack of either.
 * `getEmailById(str, obj)`: returns corresponding email with user id present in user database, else empty string
 * `hashed(str)`: returns hashed password using bcrypt hashSync method
+* `generateRandomString()`: returns a randomly generated 6 character(a-z | 0-9) string
