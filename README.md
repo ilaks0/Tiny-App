@@ -12,7 +12,7 @@ This project was created and published by me as part of my learnings at Lighthou
 
 **Deployed on GCP**
 **Accessible by internet network at:**
-[ian.laksono.net](http://ian.laksono.net) OR 
+[ian.laksono.net/urls](http://ian.laksono.net/urls) OR 
 [tiny-app-291120.uk.r.appspot.com](http://tiny-app-291120.uk.r.appspot.com)
 
 ## Requires/Imports
