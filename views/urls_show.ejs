@@ -23,8 +23,8 @@
     <div class="card-footer text-muted"></div>
     <h2>Edit</h2>
     <p>
-    <form method="POST" for='longURL' action="/urls/<%= shortURL %>?_method=PUT">New URL: <input type='text' name='longURL'
-        value='<%= longURL %>''> <button class='btn-success' type='submit'>Submit</button></form>
+    <form method="POST" for='longURL' action="/urls/<%= shortURL %>?_method=PUT">New URL: <input type='text'
+        name='longURL' value='<%= longURL %>''> <button class=' btn-success' type='submit'>Submit</button></form>
     </p>
     <% if(!user || id !== list[shortURL].userID) { %>
     <div class="card-footer text-muted">
@@ -42,6 +42,28 @@
       Unique Visits:
       <%= uniqueVisits %>
     </p>
+  </div>
+  <div>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr class='table-info'>
+          <th scope="col">Visitor</th>
+          <th scope="col">Time</th>
+        </tr>
+      <tbody>
+        <% for (let time in times) { %>
+        <tr>
+          <td>
+            <%= time %>
+          </td>
+          <td>
+            <%= times[time] %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+      </thead>
+    </table>
   </div>
 
   <!-- Bootstrap JS -->

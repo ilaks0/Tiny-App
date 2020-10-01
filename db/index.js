@@ -11,15 +11,18 @@ const urlDatabase = { // Sample URL Database
     userID: "aJ48lW",
     date: todaysDate,
     visits: {},
-    totalVisits: 0
+    totalVisits: 0,
+    time:{}
   },
   i3BoGr: {
     longURL: "https://www.google.ca", userID: "aJ48lW", date: todaysDate, visits: {},
-    totalVisits: 0
+    totalVisits: 0,
+    time:{}
   },
   sgq3y6: {
     longURL: 'http://www.youtube.com', userID: 'abcdef', date: todaysDate, visits: {},
-    totalVisits: 0
+    totalVisits: 0,
+    time:{}
   }
 };
 

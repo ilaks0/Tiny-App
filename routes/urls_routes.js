@@ -38,7 +38,8 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
         userID: req.session['user_id'],
         date: newDate,
         visits: {},
-        totalVisits: 0
+        totalVisits: 0,
+        time: {}
       };
       urlDatabase[uniqueShort] = newURL;
       return res.redirect(302, `/urls/${uniqueShort}`);
@@ -84,7 +85,8 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
       list: urlDatabase,
       date: urlDatabase[req.params.id].date,
       totalVisits: urlDatabase[req.params.id].totalVisits,
-      uniqueVisits: Object.keys(urlDatabase[req.params.id].visits).length
+      uniqueVisits: Object.keys(urlDatabase[req.params.id].visits).length,
+      times: urlDatabase[req.params.id].time
     }
     res.render('urls_show', templateVars)
   });

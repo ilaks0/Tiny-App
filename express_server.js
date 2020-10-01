@@ -37,6 +37,8 @@ app.get('/u/:id', (req, res) => {
   let cURL = urlDatabase[req.params.id];
   cURL.visits[ip] ? cURL.visits[ip]++ : cURL.visits[ip] = 1;
   cURL.totalVisits++;
+  let visitorId = dbHelpers.generateRandomString();
+  cURL.time[visitorId] = (new Date).toUTCString();
   const longURL = cURL.longURL;
   res.redirect(302, `${dbHelpers.urlPrefix(longURL)}${longURL}`);
 });
