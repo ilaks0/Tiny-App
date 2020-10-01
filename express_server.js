@@ -23,7 +23,7 @@ app.use(usersRoutes(dbHelpers));
 app.use('/urls', urlsRoutes(dbHelpers));
 
 app.get('/', (req, res) => {
-  if (dbHelper.idHelper(req.session['user_id'], users))
+  if (dbHelpers.idHelper(req.session['user_id'], users))
     return res.redirect('/urls');
   res.redirect('/login');
 });
@@ -36,7 +36,7 @@ app.get('/u/:id', (req, res) => {
 
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // read client's ip address and store in visited url's props
   let cURL = urlDatabase[req.params.id];
-  cURL.visits[ip] ? cURL.visits.ip++ : cURL.visits.ip = 1;
+  cURL.visits[ip] ? cURL.visits[ip]++ : cURL.visits[ip] = 1;
   cURL.totalVisits++;
   const longURL = cURL.longURL;
   res.redirect(302, `${dbHelpers.urlPrefix(longURL)}${longURL}`);
