@@ -18,8 +18,7 @@ app.use(cookieSession({
   name: 'session',
   keys: ['Secretkey', 'Supersecret'],
 }))
-let todaysDate = new Date();
-
+let todaysDate = (new Date()).toUTCString();
 const generateRandomString = () => Math.random().toString(36).substring(2, 8);
 const hashed = password => bcrypt.hashSync(password, 10);
 const urlDatabase = {
@@ -87,6 +86,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
+  console.log(req.ip, req.connection.remoteAddress);
   let userId;
   idHelper(req.session['user_id'], users, users) ? userId = users[req.session['user_id']].email : userId = '';
   let newDB = {};
@@ -115,7 +115,7 @@ app.get('/urls/new', (req, res) => {
 app.post('/urls', (req, res) => {
   if (idHelper(req.session['user_id'], users)) {
     let newStr = generateRandomString();
-    let newDate = new Date();
+    let newDate = (new Date()).toUTCString();
     urlDatabase[newStr] = {};
     urlDatabase[newStr].longURL = req.body.longURL;
     urlDatabase[newStr].userID = req.session['user_id'];
