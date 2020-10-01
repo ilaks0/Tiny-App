@@ -12,8 +12,8 @@ This project was created and published by me as part of my learnings at Lighthou
 
 **Deployed on GCP**
 **Accessible by internet network at:**
-[ian.laksono.net](ian.laksono.net) OR 
-[tiny-app-291120.uk.r.appspot.com](tiny-app-291120.uk.r.appspot.com)
+[ian.laksono.net](http://ian.laksono.net) OR 
+[tiny-app-291120.uk.r.appspot.com](http://tiny-app-291120.uk.r.appspot.com)
 
 ## Requires/Imports
 
