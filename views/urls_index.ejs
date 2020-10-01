@@ -13,7 +13,7 @@
 
 <body>
   <header>
-    <%- include('./partials/_header') %>
+    <%- include('./partials/_header'); %>
   </header>
   <main style="margin: 1em;">
     <h3>My URLs</h3>
@@ -50,7 +50,7 @@
         </tr>
         <% } else {%>
 
-        <% for(let url in urls) { %>
+        <% for (let url in urls) { %>
         <tr>
           <td><a href='/urls/<%=url%>'><%= url %></a></td>
           <td><a href='/u/<%=url%>' target='_blank'><%= urls[url].longURL %></a></td>

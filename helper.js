@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const getUserByEmail = (email, db) => {
   for (const user in db) {
     if (db[user].email === email)
@@ -15,12 +17,12 @@ const idHelper = (idCan, users) => {
 };
 
 const urlsForUser = (id, urlDatabase) => {
-  let cpy = {};
-  for (let short in urlDatabase) {
-    if (urlDatabase[short].userID === id)
-      cpy[short] = urlDatabase[short];
+  let owned = {};
+  for (let url in urlDatabase) {
+    if (urlDatabase[url].userID === id)
+      owned[url] = urlDatabase[url];
   }
-  return cpy;
+  return owned;
 };
 
 const urlInDB = (url, db) => {
@@ -39,12 +41,60 @@ const urlPrefix = url => {
   if (regexW.test(url))
     return 'http://';
   return 'http://www.';
-}
+};
+
+const getEmailById = (id, users) => {
+  if (idHelper(id, users))
+    return users[id].email;
+  return '';  
+};
+const hashed = password => bcrypt.hashSync(password, 10); // takes password argument and returns hashed 
+let todaysDate = (new Date()).toUTCString();
+
+const urlDatabase = { // Sample URL Database
+  b6UTxQ: {
+    longURL: "https://www.tsn.ca",
+    userID: "aJ48lW",
+    date: todaysDate,
+    visits: {},
+    totalVisits: 0
+  },
+  i3BoGr: {
+    longURL: "https://www.google.ca", userID: "aJ48lW", date: todaysDate, visits: {},
+    totalVisits: 0
+  },
+  sgq3y6: {
+    longURL: 'http://www.youtube.com', userID: 'abcdef', date: todaysDate, visits: {},
+    totalVisits: 0
+  }
+}; 
+
+const users = { // Sample User Database
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: hashed('purple-monkey-dinosuar')
+  },
+  "aJ48lW": {
+    id: "aJ48lW",
+    email: "user2@example.com",
+    password: hashed("dishwasher-funk")
+  },
+  "abcdef": {
+    id: 'abcdef',
+    email: 'test@test.ca',
+    password: hashed('asd')
+  }
+}; 
 
 module.exports = {
   getUserByEmail,
   idHelper,
   urlsForUser,
   urlInDB,
-  urlPrefix
+  urlPrefix,
+  getEmailById,
+  hashed,
+  urlDatabase,
+  users
 };

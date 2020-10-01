@@ -5,7 +5,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <title>URL - TinyApp Example</title>
+  <title>URL - TinyApp</title>
 </head>
 
 <body>
@@ -28,14 +28,14 @@
     </p>
     <% if(!user || id !== list[shortURL].userID) { %>
     <div class="card-footer text-muted">
-      <p>You do not own this URL.</p>
+      <p style='color: red'><strong>You do not own this URL.</strong></p>
     </div>
     <% } %>
     <p>
-      Date created: 
+      Date created:
       <%= date %>
     </p>
-    <p>Total visits: 
+    <p>Total Visits:
       <%= totalVisits %>
     </p>
     <p>
