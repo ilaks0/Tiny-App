@@ -46,7 +46,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
     else
       res.redirect(401, '/urls');
   });
-// Cannot DELETE /urls/sgq3y6
+
   router.delete('/:id', (req, res) => {
     if (idHelper(req.session['user_id'], users)) {
       if (urlDatabase[req.params.id].userID === req.session['user_id']) { // verify url's creator is the current user 
@@ -56,7 +56,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
     } else
       res.redirect(401, '/urls');
   });
-//Cannot PUT /urls/sgq3y6
+
   router.put('/:id', (req, res) => {
     if (idHelper(req.session['user_id'], users)) {
       if (urlDatabase[req.params.id].userID === req.session['user_id']) {
