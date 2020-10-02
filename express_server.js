@@ -22,8 +22,7 @@ app.use(usersRoutes(dbHelpers));
 app.use('/urls', urlsRoutes(dbHelpers));
 
 app.get('/', (req, res) => {
-  if (dbHelpers.idHelper(req.session['user_id'], users))
-    return res.redirect('/urls');
+  if (dbHelpers.idHelper(req.session['user_id'], users)) return res.redirect('/urls');
   res.redirect('/login');
 });
 
@@ -32,8 +31,7 @@ app.get('/urls.json', (req, res) => {
 });
 
 app.get('/u/:id', (req, res) => {
-  if (!dbHelpers.idHelper(req.params.id, urlDatabase))
-    return res.redirect(404, '/urls');
+  if (!dbHelpers.idHelper(req.params.id, urlDatabase)) throw new Error('URL does not exist in database');
 
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // read client's ip address and store in visited url's props
   let cURL = urlDatabase[req.params.id];

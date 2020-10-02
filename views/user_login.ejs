@@ -17,6 +17,9 @@
     <div class="card-header">
     </div>
     <div class="card-body">
+      <% if (error) {%>
+      <%= error %>
+      <% } %>
       <form action="/login" method="POST">
         <p>Email: </p>
         <input type='email' name='email' placeholder='Email'>

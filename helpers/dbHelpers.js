@@ -2,18 +2,14 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 module.exports = () => {
   const getUserByEmail = (email, db) => {
-    for (const user in db) {
-      if (db[user].email === email)
-        return db[user];
-    }
+    for (const user in db)
+      if (db[user].email === email) return db[user];
     return null;
   };
 
   const idHelper = (idCan, db) => {
-    for (let id in db) {
-      if (idCan === id)
-        return true;
-    }
+    for (let id in db)
+      if (idCan === id) return true;
     return false;
   };
 
@@ -27,23 +23,20 @@ module.exports = () => {
   };
 
   const urlPrefix = url => {
-    let regexW = /^www/;
-    let regexH = /^http/;
-    if (regexH.test(url))
-      return '';
-    if (regexW.test(url))
-      return 'http://';
+    let regexW = /^www\./;
+    let regexH = /^http:/;
+    if (regexH.test(url)) return ''; // no correction needed when url starts with 'http'
+    if (regexW.test(url)) return 'http://'; // adds 'http://' if url starts with 'www.' to enable redirect
     return 'http://www.';
   };
 
   const getEmailById = (id, users) => {
-    if (idHelper(id, users))
-      return users[id].email;
+    if (idHelper(id, users)) return users[id].email;
     return '';
   };
 
   const hashed = password => bcrypt.hashSync(password, saltRounds); // takes password argument and returns hashed
-  
+
   const generateRandomString = () => Math.random().toString(36).substring(2, 8);
 
   return {
