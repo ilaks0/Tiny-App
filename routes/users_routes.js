@@ -6,7 +6,7 @@ const { users } = require('../db');
 module.exports = ({ idHelper, getEmailById, hashed, generateRandomString }) => {
   
   router.get('/login', (req, res) => {
-    if (idHelper(req.session['user_id'], users)) return res.redirect(401, '/urls');
+    if (idHelper(req.session['user_id'], users)) return res.status(401).render('error_page', {error: '401: You are already logged in.'});
     const user = getEmailById(req.session['user_id'], users);
     const templateVars = { user, error:'' };
     res.render('user_login', templateVars);
@@ -24,7 +24,7 @@ module.exports = ({ idHelper, getEmailById, hashed, generateRandomString }) => {
   });
 
   router.get('/register', (req, res) => {
-    if (idHelper(req.session['user_id'], users)) return res.redirect(401, '/urls');
+    if (idHelper(req.session['user_id'], users)) return res.status(401).render('error_page', {error: '401: You are already logged in, log out to register'});
     const user = getEmailById(req.session['user_id'], users);
     const templateVars = { user, error:'' };
     res.render('user_registration', templateVars);

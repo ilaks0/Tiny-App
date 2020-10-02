@@ -31,7 +31,7 @@ app.get('/urls.json', (req, res) => {
 });
 
 app.get('/u/:id', (req, res) => {
-  if (!dbHelpers.idHelper(req.params.id, urlDatabase)) return res.render('error_page',{error: 'URL does not exist in database'});
+  if (!dbHelpers.idHelper(req.params.id, urlDatabase)) return res.status(404).render('error_page',{error: '404: URL does not exist in database'});
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // read client's ip address and store in visited url's props
   let visitURL = urlDatabase[req.params.id];
