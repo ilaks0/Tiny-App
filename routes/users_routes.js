@@ -26,14 +26,14 @@ module.exports = ({ idHelper, getEmailById, hashed, generateRandomString }) => {
   router.get('/register', (req, res) => {
     if (idHelper(req.session['user_id'], users)) return res.redirect(401, '/urls');
     let user = getEmailById(req.session['user_id'], users);
-    const templateVars = { user };
+    const templateVars = { user, error:'' };
     res.render('user_registration', templateVars);
   });
 
   router.post('/register', (req, res) => {
-    if (!(req.body.email) || !(req.body.password)) throw new Error('Email and password fields cannot be empty');
+    if (!(req.body.email) || !(req.body.password)) return res.render('user_registration', {user: '', error: 'Email and password fields cannot be empty'});
     for (let user in users)
-      if (req.body.email === users[user].email) throw new Error('Email already in use');
+      if (req.body.email === users[user].email) return res.render('user_registration', {user: '', error: 'Email already in use'});
     let id = generateRandomString();
     req.session['user_id'] = id;
     const obj = {

@@ -17,6 +17,10 @@
     <div class="card-header">
     </div>
     <div class="card-body">
+      <% if (error) {%>
+      <h2 class='text-danger'><%= error %></h2>
+      <% } %>
+
       <form action='/register' method='POST'>
         <p>Email: </p><input name='email' type='email' placeholder='Email'>
         <p>Password: </p><input name='password' type='password' placeholder='Password'>

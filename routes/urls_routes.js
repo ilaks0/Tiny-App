@@ -7,7 +7,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
 
   router.use(methodOverride('_method'));
   router.get('/', (req, res) => {
-    if (!idHelper(req.session['user_id'], users)) throw new Error('You must log in to view URLs');
+    if (!idHelper(req.session['user_id'], users)) return res.render('error_page', { error: 'You must log in to view URLs'});
     let user = getEmailById(req.session['user_id'], users);
     let urls = {};
     if (idHelper(req.session['user_id'], users)) urls = urlsForUser(req.session['user_id'], urlDatabase);
@@ -41,7 +41,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
       urlDatabase[uniqueShort] = newURL;
       return res.redirect(302, `/urls/${uniqueShort}`);
     } else
-      throw new Error('You must log in to create URLS');
+      res.render('error_page', { error: 'You must log in to create URLS' });
   });
 
   router.delete('/:id', (req, res) => {
@@ -50,9 +50,9 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
         delete urlDatabase[req.params.id]; // then delete the url
         return res.redirect(`/urls/`);
       } else
-        throw new Error('You do not own the URL, delete failed');
+        return res.render('error_page', { error: 'You do not own the URL, delete failed'});
     } else
-      throw new Error('Log in to delete URL');
+      res.render('error_page', { error: 'Log in to delete URL' });
   });
 
   router.put('/:id', (req, res) => {
@@ -61,13 +61,13 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
         urlDatabase[req.params.id].longURL = req.body.longURL;
         return res.redirect(`/urls/`);
       } else
-        throw new Error('You do not own this URL');
+        return res.render('error_page', { error: 'You do not own this URL' });
     } else
-      throw new Error('Log in to edit URL');
+      res.render('error_page', { error: 'Log in to edit URL' });
   });
 
   router.get('/:id', (req, res) => {
-    if (!idHelper(req.params.id, urlDatabase)) throw new Error('URL does not exist in database');
+    if (!idHelper(req.params.id, urlDatabase)) return res.render('error_page', { error: 'URL does not exist in database'});
     if (req.session['user_id'] === urlDatabase[req.params.id].userID) {
       const templateVars = {
         shortURL: req.params.id,
@@ -82,7 +82,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
       };
       return res.render('urls_show', templateVars);
     } else
-      throw new Error('You do not own this URL');
+      res.render('error_page', { error: 'You do not own this URL' });
 
   });
 

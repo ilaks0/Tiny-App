@@ -18,7 +18,7 @@
     </div>
     <div class="card-body">
       <% if (error) {%>
-      <%= error %>
+      <h2 class='text-danger'><%= error %></h2>
       <% } %>
       <form action="/login" method="POST">
         <p>Email: </p>
