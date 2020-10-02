@@ -1,15 +1,16 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 module.exports = () => {
+  
   const getUserByEmail = (email, db) => {
     for (const user in db)
       if (db[user].email === email) return db[user];
     return null;
   };
 
-  const idHelper = (idCan, db) => {
+  const idHelper = (idCandidate, db) => {
     for (let id in db)
-      if (idCan === id) return true;
+      if (idCandidate === id) return true;
     return false;
   };
 

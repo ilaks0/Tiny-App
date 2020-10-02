@@ -34,12 +34,12 @@ app.get('/u/:id', (req, res) => {
   if (!dbHelpers.idHelper(req.params.id, urlDatabase)) return res.render('error_page',{error: 'URL does not exist in database'});
 
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // read client's ip address and store in visited url's props
-  let cURL = urlDatabase[req.params.id];
-  cURL.visits[ip] ? cURL.visits[ip]++ : cURL.visits[ip] = 1;
-  cURL.totalVisits++;
+  let visitURL = urlDatabase[req.params.id];
+  visitURL.visits[ip] ? visitURL.visits[ip]++ : visitURL.visits[ip] = 1;
+  visitURL.totalVisits++;
   let visitorId = dbHelpers.generateRandomString();
-  cURL.time[visitorId] = (new Date).toUTCString();
-  const longURL = cURL.longURL;
+  visitURL.time[visitorId] = (new Date).toUTCString();
+  const longURL = visitURL.longURL;
   res.redirect(302, `${dbHelpers.urlPrefix(longURL)}${longURL}`); // applies url correction depending on http://, www. format
 });
 
