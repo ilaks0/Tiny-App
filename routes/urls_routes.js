@@ -26,7 +26,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
     res.render('urls_new', templateVars);
   });
 
-  router.post('/', (req, res) => {
+  router.post('/', (req, res) => { // create new url in db 
     if (idHelper(req.session['user_id'], users)) {
       const uniqueShort = generateRandomString();
       const newDate = (new Date()).toUTCString();
@@ -69,7 +69,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
   router.get('/:id', (req, res) => {
     if (!idHelper(req.params.id, urlDatabase)) return res.status(404).render('error_page', { error: '404: URL not found in database' });
     if (req.session['user_id'] === urlDatabase[req.params.id].userID) {
-      const templateVars = {
+      const templateVars = { //stage specific url props for render
         shortURL: req.params.id,
         longURL: urlDatabase[req.params.id].longURL,
         user: users[req.session['user_id']].email,
