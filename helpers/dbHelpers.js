@@ -8,9 +8,9 @@ module.exports = () => {
     return null;
   };
 
-  const idHelper = (idCandidate, db) => {
+  const idHelper = (idCandidate, db) => { // applicable to both url db, and user db, 
     for (let id in db)
-      if (idCandidate === id) return true;
+      if (idCandidate === id) return true; // return true if candidate exists, else false
     return false;
   };
 
@@ -20,7 +20,7 @@ module.exports = () => {
       if (urlDatabase[url].userID === id)
         owned[url] = urlDatabase[url];
     }
-    return owned;
+    return owned; // return object containing urls for specific user
   };
 
   const urlPrefix = url => {

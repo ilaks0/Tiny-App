@@ -19,7 +19,7 @@ app.use(cookieSession({
 app.set("view engine", "ejs");
 
 app.use(usersRoutes(dbHelpers));
-app.use('/urls', urlsRoutes(dbHelpers));
+app.use('/urls', urlsRoutes(dbHelpers)); // use default router to /urls
 
 app.get('/', (req, res) => {
   if (dbHelpers.idHelper(req.session['user_id'], users)) return res.redirect('/urls');
