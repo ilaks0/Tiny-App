@@ -14,8 +14,8 @@ module.exports = ({ idHelper, getEmailById, hashed, generateRandomString }) => {
 
   router.post('/login', (req, res) => {
     for (const user in users) {
-      if (req.body.email === users[user].email) {
-        if (bcrypt.compareSync(req.body.password, users[user].password)) {
+      if (req.body.email === users[user].email) { // compare email first
+        if (bcrypt.compareSync(req.body.password, users[user].password)) { // compare hashed password next
           req.session['user_id'] = user;
           return res.redirect('/urls');
         } else

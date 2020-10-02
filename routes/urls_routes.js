@@ -5,12 +5,12 @@ const methodOverride = require('method-override');
 
 module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString }) => {
 
-  router.use(methodOverride('_method'));
+  router.use(methodOverride('_method')); // query _method in url for DELETE or PUT override
+
   router.get('/', (req, res) => {
     if (!idHelper(req.session['user_id'], users)) return res.status(401).render('error_page', { error: '401: You must log in to view URLs' });
     const user = getEmailById(req.session['user_id'], users);
-    let urls = {};
-    urls = urlsForUser(req.session['user_id'], urlDatabase);
+    const urls = urlsForUser(req.session['user_id'], urlDatabase);
     const templateVars = { urls, user };
     res.render('urls_index', templateVars);
   });
@@ -58,7 +58,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
   router.put('/:id', (req, res) => {
     if (idHelper(req.session['user_id'], users)) {
       if (urlDatabase[req.params.id].userID === req.session['user_id']) {
-        urlDatabase[req.params.id].longURL = req.body.longURL;
+        urlDatabase[req.params.id].longURL = req.body.longURL; // assign updated destination to url
         return res.redirect(`/urls/`);
       } else
         return res.status(401).render('error_page', { error: '401: You do not own this URL' });
@@ -69,7 +69,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
   router.get('/:id', (req, res) => {
     if (!idHelper(req.params.id, urlDatabase)) return res.status(404).render('error_page', { error: '404: URL not found in database' });
     if (req.session['user_id'] === urlDatabase[req.params.id].userID) {
-      const templateVars = { //stage specific url props for render
+      const templateVars = { //stage specific url with props before rendering
         shortURL: req.params.id,
         longURL: urlDatabase[req.params.id].longURL,
         user: users[req.session['user_id']].email,

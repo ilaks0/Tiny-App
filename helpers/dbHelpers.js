@@ -20,7 +20,7 @@ module.exports = () => {
       if (urlDatabase[url].userID === id)
         owned[url] = urlDatabase[url];
     }
-    return owned; // return object containing urls for specific user
+    return owned; // return object containing urls created by specific user
   };
 
   const urlPrefix = url => {
