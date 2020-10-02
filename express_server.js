@@ -40,7 +40,7 @@ app.get('/u/:id', (req, res) => {
   let visitorId = dbHelpers.generateRandomString();
   cURL.time[visitorId] = (new Date).toUTCString();
   const longURL = cURL.longURL;
-  res.redirect(302, `${dbHelpers.urlPrefix(longURL)}${longURL}`);
+  res.redirect(302, `${dbHelpers.urlPrefix(longURL)}${longURL}`); // applies url correction depending on http://, www. format
 });
 
 app.listen(port, () => console.log('listening ', port));

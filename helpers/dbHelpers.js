@@ -23,11 +23,11 @@ module.exports = () => {
   };
 
   const urlPrefix = url => {
-    let regexW = /^www\./;
-    let regexH = /^http:/;
+    let regexW = /^www\./; // check for 'www.' at beginning of url - addresses bug when redirecting to example.com
+    let regexH = /^http:/; // similar to above with 'http'
     if (regexH.test(url)) return ''; // no correction needed when url starts with 'http'
     if (regexW.test(url)) return 'http://'; // adds 'http://' if url starts with 'www.' to enable redirect
-    return 'http://www.';
+    return 'http://www.'; // if url is in form of example.com, will later add 'http://www.' to beginning
   };
 
   const getEmailById = (id, users) => {
