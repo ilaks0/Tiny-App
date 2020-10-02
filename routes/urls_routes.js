@@ -7,10 +7,10 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
 
   router.use(methodOverride('_method'));
   router.get('/', (req, res) => {
-    if (!idHelper(req.session['user_id'], users)) return res.status(401).render('error_page', { error: '401: You must log in to view URLs'});
+    if (!idHelper(req.session['user_id'], users)) return res.status(401).render('error_page', { error: '401: You must log in to view URLs' });
     const user = getEmailById(req.session['user_id'], users);
     let urls = {};
-    if (idHelper(req.session['user_id'], users)) urls = urlsForUser(req.session['user_id'], urlDatabase);
+    urls = urlsForUser(req.session['user_id'], urlDatabase);
     const templateVars = { urls, user };
     res.render('urls_index', templateVars);
   });
@@ -50,7 +50,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
         delete urlDatabase[req.params.id]; // then delete the url
         return res.redirect(`/urls/`);
       } else
-        return res.status(401).render('error_page', { error: '401: You do not own the URL, delete failed'});
+        return res.status(401).render('error_page', { error: '401: You do not own the URL, delete failed' });
     } else
       res.status(401).render('error_page', { error: '401: Log in to delete URL' });
   });
@@ -67,7 +67,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
   });
 
   router.get('/:id', (req, res) => {
-    if (!idHelper(req.params.id, urlDatabase)) return res.status(404).render('error_page', { error: '404: URL not found in database'});
+    if (!idHelper(req.params.id, urlDatabase)) return res.status(404).render('error_page', { error: '404: URL not found in database' });
     if (req.session['user_id'] === urlDatabase[req.params.id].userID) {
       const templateVars = {
         shortURL: req.params.id,
