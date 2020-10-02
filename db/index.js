@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const hashed = password => bcrypt.hashSync(password, saltRounds);
 
-let todaysDate = (new Date()).toUTCString();
+const todaysDate = (new Date()).toUTCString();
 
 const urlDatabase = { // Sample URL Database
   b6UTxQ: {

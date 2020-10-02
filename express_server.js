@@ -33,11 +33,11 @@ app.get('/urls.json', (req, res) => {
 app.get('/u/:id', (req, res) => {
   if (!dbHelpers.idHelper(req.params.id, urlDatabase)) return res.render('error_page',{error: 'URL does not exist in database'});
 
-  let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // read client's ip address and store in visited url's props
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // read client's ip address and store in visited url's props
   let visitURL = urlDatabase[req.params.id];
   visitURL.visits[ip] ? visitURL.visits[ip]++ : visitURL.visits[ip] = 1;
   visitURL.totalVisits++;
-  let visitorId = dbHelpers.generateRandomString();
+  const visitorId = dbHelpers.generateRandomString();
   visitURL.time[visitorId] = (new Date).toUTCString();
   const longURL = visitURL.longURL;
   res.redirect(302, `${dbHelpers.urlPrefix(longURL)}${longURL}`); // applies url correction depending on http://, www. format

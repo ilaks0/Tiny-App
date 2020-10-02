@@ -8,7 +8,7 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
   router.use(methodOverride('_method'));
   router.get('/', (req, res) => {
     if (!idHelper(req.session['user_id'], users)) return res.render('error_page', { error: 'You must log in to view URLs'});
-    let user = getEmailById(req.session['user_id'], users);
+    const user = getEmailById(req.session['user_id'], users);
     let urls = {};
     if (idHelper(req.session['user_id'], users)) urls = urlsForUser(req.session['user_id'], urlDatabase);
     const templateVars = { urls, user };
@@ -28,9 +28,9 @@ module.exports = ({ idHelper, urlsForUser, getEmailById, generateRandomString })
 
   router.post('/', (req, res) => {
     if (idHelper(req.session['user_id'], users)) {
-      let uniqueShort = generateRandomString();
-      let newDate = (new Date()).toUTCString();
-      let newURL = {
+      const uniqueShort = generateRandomString();
+      const newDate = (new Date()).toUTCString();
+      const newURL = {
         longURL: req.body.longURL,
         userID: req.session['user_id'],
         date: newDate,

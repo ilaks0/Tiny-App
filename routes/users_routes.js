@@ -7,13 +7,13 @@ module.exports = ({ idHelper, getEmailById, hashed, generateRandomString }) => {
   
   router.get('/login', (req, res) => {
     if (idHelper(req.session['user_id'], users)) return res.redirect(401, '/urls');
-    let user = getEmailById(req.session['user_id'], users);
+    const user = getEmailById(req.session['user_id'], users);
     const templateVars = { user, error:'' };
     res.render('user_login', templateVars);
   });
 
   router.post('/login', (req, res) => {
-    for (let user in users) {
+    for (const user in users) {
       if (req.body.email === users[user].email &&
         bcrypt.compareSync(req.body.password, users[user].password)) {
         req.session['user_id'] = user;
@@ -25,16 +25,16 @@ module.exports = ({ idHelper, getEmailById, hashed, generateRandomString }) => {
 
   router.get('/register', (req, res) => {
     if (idHelper(req.session['user_id'], users)) return res.redirect(401, '/urls');
-    let user = getEmailById(req.session['user_id'], users);
+    const user = getEmailById(req.session['user_id'], users);
     const templateVars = { user, error:'' };
     res.render('user_registration', templateVars);
   });
 
   router.post('/register', (req, res) => {
     if (!(req.body.email) || !(req.body.password)) return res.render('user_registration', {user: '', error: 'Email and password fields cannot be empty'});
-    for (let user in users)
+    for (const user in users)
       if (req.body.email === users[user].email) return res.render('user_registration', {user: '', error: 'Email already in use'});
-    let id = generateRandomString();
+    const id = generateRandomString();
     req.session['user_id'] = id;
     const obj = {
       id,
